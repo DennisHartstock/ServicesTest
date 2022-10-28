@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         }
         binding.jobScheduler.setOnClickListener {
             val componentName = ComponentName(this, MyJobService::class.java)
+
             val jobInfo = JobInfo.Builder(MyJobService.JOB_ID, componentName)
                 .setRequiresCharging(true)
 //                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)

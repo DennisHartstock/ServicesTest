@@ -8,7 +8,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import kotlinx.coroutines.*
 
@@ -16,7 +15,6 @@ class MyForegroundService : Service() {
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate() {
         super.onCreate()
         log("onCreate")
@@ -26,8 +24,8 @@ class MyForegroundService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         log("onStartCommand")
-        for (i in 0 until 100) {
-            coroutineScope.launch {
+        coroutineScope.launch {
+            for (i in 0 until 100) {
                 delay(1000)
                 log("Timer $i")
             }
@@ -50,15 +48,16 @@ class MyForegroundService : Service() {
         Log.d("SERVICE_TAG", "MyForegroundService: $message")
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel() {
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        val notificationChannel = NotificationChannel(
-            CHANNEL_ID,
-            CHANNEL_NAME,
-            NotificationManager.IMPORTANCE_DEFAULT
-        )
-        notificationManager.createNotificationChannel(notificationChannel)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel = NotificationChannel(
+                CHANNEL_ID,
+                CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            notificationManager.createNotificationChannel(notificationChannel)
+        }
     }
 
     private fun createNotification() = NotificationCompat.Builder(this, CHANNEL_ID)

@@ -3,13 +3,10 @@ package ru.sumin.servicestest
 import android.app.IntentService
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 
 class MyIntentService2 : IntentService(NAME) {
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate() {
         super.onCreate()
         log("onCreate")
