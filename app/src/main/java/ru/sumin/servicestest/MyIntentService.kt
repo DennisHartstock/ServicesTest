@@ -7,12 +7,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 
 class MyIntentService : IntentService(NAME) {
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate() {
         super.onCreate()
         log("onCreate")
@@ -39,15 +37,16 @@ class MyIntentService : IntentService(NAME) {
         Log.d("SERVICE_TAG", "MyIntentService: $message")
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel() {
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        val notificationChannel = NotificationChannel(
-            CHANNEL_ID,
-            CHANNEL_NAME,
-            NotificationManager.IMPORTANCE_DEFAULT
-        )
-        notificationManager.createNotificationChannel(notificationChannel)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel = NotificationChannel(
+                CHANNEL_ID,
+                CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            notificationManager.createNotificationChannel(notificationChannel)
+        }
     }
 
     private fun createNotification() = NotificationCompat.Builder(this, CHANNEL_ID)

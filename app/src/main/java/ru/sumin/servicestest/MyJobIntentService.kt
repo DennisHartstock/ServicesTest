@@ -2,14 +2,11 @@ package ru.sumin.servicestest
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.core.app.JobIntentService
 
 class MyJobIntentService : JobIntentService() {
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate() {
         super.onCreate()
         log("onCreate")
